@@ -231,6 +231,7 @@
 		E0CE9EEB9BAEA59E69BFEB354076CE23 /* iOSPhotoEditor */ = {
 			isa = PBXGroup;
 			children = (
+				FE070E3A2384C96000819A72 /* DrawingView.swift */,
 				620624A0B756A5BD502988072E2080CC /* ColorCollectionViewCell.swift */,
 				18477A4C68700C3E9EF54950EFD0B3FA /* ColorsCollectionViewDelegate.swift */,
 				667DDF43E13A28EDB1741740857BC6FB /* CropRectView.swift */,
@@ -259,7 +260,6 @@
 				F8308214725A7270F3A5F8A8945DC730 /* Pod */,
 				D983E524AF5A2ABE527D8843F32B7BE0 /* Resources */,
 				E2E7D03D06EDDDDC52E518C29EA8D29D /* Support Files */,
-				FE070E3A2384C96000819A72 /* DrawingView.swift */,
 			);
 			name = iOSPhotoEditor;
 			path = ../..;
