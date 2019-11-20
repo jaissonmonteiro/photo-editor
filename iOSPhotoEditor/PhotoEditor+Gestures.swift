@@ -37,7 +37,17 @@ extension PhotoEditorViewController : UIGestureRecognizerDelegate  {
             } else {
                 moveView(view: view, recognizer: recognizer)
             }
+            
+            if view is UITextView {
+                let textVIew = view as! UITextView
+                if recognizer.state == .began || recognizer.state == .changed {
+                    textVIew.isEditable = false
+                } else {
+                    textVIew.isEditable = true
+                }
+            }
         }
+        
     }
     
     /**
@@ -48,7 +58,7 @@ extension PhotoEditorViewController : UIGestureRecognizerDelegate  {
         if let view = recognizer.view {
             if view is UITextView {
                 let textView = view as! UITextView
-                
+                textView.isEditable = false
                 if textView.font!.pointSize * recognizer.scale < 90 {
                     let font = UIFont(name: textView.font!.fontName, size: textView.font!.pointSize * recognizer.scale)
                     textView.font = font
@@ -63,12 +73,16 @@ extension PhotoEditorViewController : UIGestureRecognizerDelegate  {
                                                   height: sizeToFit.height)
                 }
                 
-                
+                if recognizer.state == .ended {
+                    textView.isEditable = true
+                }
                 textView.setNeedsDisplay()
             } else {
                 view.transform = view.transform.scaledBy(x: recognizer.scale, y: recognizer.scale)
             }
             recognizer.scale = 1
+            
+           
         }
     }
     

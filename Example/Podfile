@@ -6,7 +6,7 @@ target 'Example' do
   use_frameworks!
 
   # Pods for editorTest
-#  pod 'iOSPhotoEditor' #, :git => 'https://github.com/M-Hamed/photo-editor.git'
+#  pod 'iOSPhotoEditor', :git => 'https://github.com/M-Hamed/photo-editor.git'
   pod 'iOSPhotoEditor', :path => '../'
 
 end

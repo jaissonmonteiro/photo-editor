@@ -10,6 +10,10 @@ import UIKit
 
 public final class PhotoEditorViewController: UIViewController {
     
+    @IBOutlet var hide: UITapGestureRecognizer!
+    @IBAction func sla(_ sender: Any) {
+        view.endEditing(true)
+    }
     /** holding the 2 imageViews original image and drawing & stickers */
     @IBOutlet weak var canvasView: UIView!
     //To hold the image
@@ -137,6 +141,36 @@ public final class PhotoEditorViewController: UIViewController {
         bottomToolbar.isHidden = hide
         bottomGradient.isHidden = hide
     }
+    
+    func showAlert() {
+        
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        
+        let alert = UIAlertController(title: "SELETOR", message: nil, preferredStyle: .actionSheet)
+        let cam = UIAlertAction(title: "Camera", style: .default) { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                picker.sourceType = .camera
+                self.present(picker, animated: true, completion: nil)
+            }
+        }
+        let photos = UIAlertAction(title: "Fotos", style: .default) { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                picker.sourceType = .photoLibrary
+                self.present(picker, animated: true, completion: nil)
+            }
+        }
+        
+        alert.addAction(cam)
+        alert.addAction(photos)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: - IBActions
+    
+    @IBAction func selectImage(_ sender: UIButton) {
+        showAlert()
+    }
 }
 
 extension PhotoEditorViewController: ColorDelegate {
@@ -147,6 +181,15 @@ extension PhotoEditorViewController: ColorDelegate {
             activeTextView?.textColor = color
             textColor = color
         }
+    }
+}
+
+extension PhotoEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        
+        didSelectImage(image: image)
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 

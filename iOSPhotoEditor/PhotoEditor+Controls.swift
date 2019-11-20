@@ -50,6 +50,10 @@ extension PhotoEditorViewController {
     }
 
     @IBAction func textButtonTapped(_ sender: Any) {
+        hideToolbar(hide: true)
+        doneButton.isHidden = false
+        colorPickerView.isHidden = false
+        self.canvasImageView.isUserInteractionEnabled = false
         isTyping = true
         let textView = UITextView(frame: CGRect(x: 0, y: canvasImageView.center.y,
                                                 width: UIScreen.main.bounds.width, height: 30))

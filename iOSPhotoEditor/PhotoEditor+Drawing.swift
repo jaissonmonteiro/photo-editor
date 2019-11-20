@@ -55,6 +55,7 @@ extension PhotoEditorViewController {
         
     }
     
+    
     func drawLineFrom(_ fromPoint: CGPoint, toPoint: CGPoint) {
         // 1
         let canvasSize = canvasImageView.frame.integral.size
