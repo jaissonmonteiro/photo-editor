@@ -9,6 +9,7 @@ import UIKit
 
 extension PhotoEditorViewController {
     
+    /*
     override public func touchesBegan(_ touches: Set<UITouch>,
                                       with event: UIEvent?){
         if isDrawing {
@@ -55,6 +56,15 @@ extension PhotoEditorViewController {
         
     }
     
+    func teste() {
+        if let sla = UIGraphicsGetImageFromCurrentImageContext() {
+            let imageView = UIImageView(image: sla)
+            canvasImageView.addSubview(imageView)
+            imageView.frame = canvasImageView.frame.integral
+        } else {
+            print("nao pegou")
+        }
+    }
     
     func drawLineFrom(_ fromPoint: CGPoint, toPoint: CGPoint) {
         // 1
@@ -73,9 +83,8 @@ extension PhotoEditorViewController {
             // 4
             context.strokePath()
             // 5
-            canvasImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         }
         UIGraphicsEndImageContext()
     }
-    
+    */
 }

@@ -10,6 +10,14 @@ import UIKit
 
 public final class PhotoEditorViewController: UIViewController {
     
+    //MARK: - Attributes
+    var path = UIBezierPath()
+    var startPoint = CGPoint()
+    var currentPoint = CGPoint()
+    
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var redoButton: UIButton!
+    @IBOutlet weak var undoAnsRedo: UIStackView!
     @IBOutlet var hide: UITapGestureRecognizer!
     @IBAction func sla(_ sender: Any) {
         view.endEditing(true)
@@ -60,7 +68,7 @@ public final class PhotoEditorViewController: UIViewController {
     public var hiddenControls : [control] = []
     
     var stickersVCIsVisible = false
-    var drawColor: UIColor = UIColor.black
+    var drawColor: UIColor = UIColor.black 
     var textColor: UIColor = UIColor.white
     var isDrawing: Bool = false
     var lastPoint: CGPoint!
@@ -85,7 +93,7 @@ public final class PhotoEditorViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.setImageView(image: image!)
-        
+        undoAnsRedo.isHidden = true
         deleteView.layer.cornerRadius = deleteView.bounds.height / 2
         deleteView.layer.borderWidth = 2.0
         deleteView.layer.borderColor = UIColor.white.cgColor
@@ -107,6 +115,20 @@ public final class PhotoEditorViewController: UIViewController {
         configureCollectionView()
         stickersViewController = StickersViewController(nibName: "StickersViewController", bundle: Bundle(for: StickersViewController.self))
         hideControls()
+        addDrawing()
+    }
+    var drawing: DrawingView!
+    
+    func addDrawing() {
+        let view = DrawingView()
+        view.frame = canvasImageView.frame.integral
+        view.backgroundColor = .clear
+        view.isDrawing = true
+        view.color = drawColor
+        view.layer.zPosition = -1
+        view.tag = 300
+        drawing = view
+        canvasImageView.addSubview(view)
     }
     
     func configureCollectionView() {
@@ -160,9 +182,11 @@ public final class PhotoEditorViewController: UIViewController {
                 self.present(picker, animated: true, completion: nil)
             }
         }
+        let cancel = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
         
         alert.addAction(cam)
         alert.addAction(photos)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
@@ -171,12 +195,20 @@ public final class PhotoEditorViewController: UIViewController {
     @IBAction func selectImage(_ sender: UIButton) {
         showAlert()
     }
+    @IBAction func desfazer(_ sender: UIButton) {
+        drawing.undo()
+        
+    }
+    @IBAction func redo(_ sender: UIButton) {
+        drawing.redoPaths()
+    }
 }
 
 extension PhotoEditorViewController: ColorDelegate {
     func didSelectColor(color: UIColor) {
         if isDrawing {
             self.drawColor = color
+            drawing.color = drawColor
         } else if activeTextView != nil {
             activeTextView?.textColor = color
             textColor = color

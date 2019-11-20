@@ -42,11 +42,21 @@ extension PhotoEditorViewController {
     }
 
     @IBAction func drawButtonTapped(_ sender: Any) {
+        undoAnsRedo.isHidden = false
         isDrawing = true
-        canvasImageView.isUserInteractionEnabled = false
         doneButton.isHidden = false
         colorPickerView.isHidden = false
         hideToolbar(hide: true)
+        
+        guard let drawing = canvasImageView.viewWithTag(300) as? DrawingView else {return}
+        drawing.isDrawing = true
+        drawing.isUserInteractionEnabled = true
+        
+        for view in canvasImageView.subviews {
+            if view is UIImageView || view is UITextView {
+                view.isUserInteractionEnabled = false
+            }
+        }
     }
 
     @IBAction func textButtonTapped(_ sender: Any) {
@@ -75,12 +85,23 @@ extension PhotoEditorViewController {
     }    
     
     @IBAction func doneButtonTapped(_ sender: Any) {
+        isDrawing = false
+        undoAnsRedo.isHidden = true
         view.endEditing(true)
         doneButton.isHidden = true
         colorPickerView.isHidden = true
         canvasImageView.isUserInteractionEnabled = true
         hideToolbar(hide: false)
         isDrawing = false
+        
+        for view in canvasImageView.subviews {
+            if view is DrawingView {
+                let drawinView = view as! DrawingView
+                drawinView.isDrawing = false
+            }else {
+                view.isUserInteractionEnabled = true 
+            }
+        }
     }
     
     //MARK: Bottom Toolbar
@@ -100,7 +121,11 @@ extension PhotoEditorViewController {
         canvasImageView.image = nil
         //clear stickers and textviews
         for subview in canvasImageView.subviews {
-            subview.removeFromSuperview()
+            if subview != drawing {
+                subview.removeFromSuperview()
+            } else {
+                drawing.clear()
+            }
         }
     }
     
