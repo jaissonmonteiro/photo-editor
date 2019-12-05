@@ -123,7 +123,7 @@ public final class PhotoEditorViewController: UIViewController {
         let view = DrawingView()
         view.frame = canvasImageView.frame.integral
         view.backgroundColor = .clear
-        view.isDrawing = true
+        view.isDrawing = false
         view.color = drawColor
         view.layer.zPosition = -1
         view.tag = 300
